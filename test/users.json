@@ -1,0 +1,5 @@
+[
+  {"username" : "milos", "password": "milos" , "email" : "milos@gmail.com", "date": "date", "type": "admin", "picture": ""},
+  {"username" : "dusan", "password": "dusan" , "email" : "dusan@gmail.com", "date": "date", "type": "user", "picture": ""},
+  {"username" : "petar", "password": "petar" , "email" : "petar@gmail.com", "date": "date", "type": "user", "picture": ""}
+]
