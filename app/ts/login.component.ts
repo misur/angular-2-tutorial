@@ -22,26 +22,22 @@ export class LoginComponent implements OnInit{
     data:Object = {};
     error = [];
     rememberMe:boolean = true;
-    testUsers:string = "";
-    users :User [];
+    users :User []= [];
     constructor(private _router: Router, private _userService: UserService){
 
 
     }
 
     ngOnInit(): any {
-        this._userService.getUsers().subscribe(
-            data => this.testUsers = JSON.stringify(data),
-            error => alert(error),
-            () => console.log("finished")
-        );
-
-        // this.users = this.testUsers.map
         // this._userService.getUsers().subscribe(
-        //     users => this.users = users,
-        //     error => console.log(error)
+        //     data => this.fromData(data),
+        //     error => alert(error),
+        //     () => console.log("finished")
         // );
+            this.users = this._userService.getUsers();
     }
+
+
 
     private clone(object: any){
         // hack
@@ -49,37 +45,38 @@ export class LoginComponent implements OnInit{
     }
 
 
-    //
-    // saveToCookie(username:string, password: string){
-    //     var key = btoa(btoa(username) + '??' + btoa(password));
-    //     //Cookie.set('sessionID',key);
-    //     document.cookie = 'sessionID='+ key;
-    // }
+
+    saveToCookie(username:string, password: string){
+        var key = btoa(btoa(username) + '??' + btoa(password));
+        //Cookie.set('sessionID',key);
+        document.cookie = 'sessionID='+ key;
+    }
 
     formSubmit(){
-        // this.error = [];
-        // var uname = this.data.username;
-        // var pass  = this.data.password;
-        //
-        //
-        //
-        // if(uname === undefined || pass === undefined){
-        //     this.error.push("Must fill username and password");
-        // } else {
-        //
-        //
-        //     if(uname== "milos" && pass == "admin"){
-        //         if(this.rememberMe == true ){
-        //             //this.saveToLocalStorage(uname,pass);
-        //             this.saveToCookie(uname,pass);
-        //         }
-        //         this._userService.setUser(uname,pass);
-        //         this._router.navigate(['AdminArea']);
-        //
-        //     }else{
-        //         this.error.push("Username or password  are wrong!");
-        //     }
-        // }
+        this.error = [];
+        var uname = this.data.username;
+        var pass  = this.data.password;
+
+
+
+        if(uname === undefined || pass === undefined){
+            this.error.push("Must fill username and password");
+        } else {
+
+
+            if(this._userService.checkExistUser(uname,pass)){
+                if(this.rememberMe == true ){
+                    //this.saveToLocalStorage(uname,pass);
+                    this.saveToCookie(uname,pass);
+                }
+                this._userService.setUser(uname,pass);
+                this._router.navigate(['MainComponenet']);
+                console.log("logged");
+
+            }else{
+                this.error.push("Username or password  are wrong!");
+            }
+        }
     }
 
 

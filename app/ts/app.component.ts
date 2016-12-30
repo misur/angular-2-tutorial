@@ -6,6 +6,7 @@ import {NavbarComponent} from "./navbar.component";
 import {LoginComponent} from "./login.component";
 import {OnInit} from "angular2/core";
 import {Router} from "angular2/router";
+import {CreateAccountComponenets} from "./components/createAccount.component";
 
 @Component({
     selector: 'my-app',
@@ -21,7 +22,12 @@ import {Router} from "angular2/router";
     {
         path: '/login',
         component: LoginComponent,
-        name: 'LoginComponenet'}
+        name: 'LoginComponent'},
+    {
+        path: '/createAccount',
+        component: CreateAccountComponenets,
+        name: 'CreateAccountComponenets'
+    }
 ])
 
 export class AppComponent implements OnInit{
@@ -31,8 +37,11 @@ export class AppComponent implements OnInit{
     }
 
     ngOnInit(): any {
-       if(true == true){
-           this._router.navigate(['LoginComponenet']);
+        var username= localStorage.getItem("username");
+        var password= localStorage.getItem("password");
+        console.log(username+" - "+ password);
+       if(username == null && password == null){
+           this._router.navigate(['LoginComponent']);
        }
     }
 

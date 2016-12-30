@@ -5,12 +5,13 @@ import {Injectable} from "angular2/core";
 import {User} from "../models/user";
 import {Http} from "angular2/src/http/http";
 import 'rxjs/add/operator/map';
-import {Observable} from "rxjs";
 import {Response} from "angular2/src/http/static_response";
+import {Observable} from "rxjs";
 
 @Injectable()
 export  class UserService{
 
+    users :User []= [];
     constructor(private _http: Http){
 
     }
@@ -28,16 +29,33 @@ export  class UserService{
 
     }
 
-    getUsers(){
-        // return this._http.get("./test/users.json").map(this.extractData);
-        return this._http.get("./test/users.json").map(res => res.json());
-        // return this._http.get('http://date.jsontest.com/').map(res => res.json());
+    getUsers():User[] {
+
+        let test= this._http.get("./test/users.json")
+            .map( responseData =>
+                 responseData.json()
+            ).subscribe(
+            data => this.fromData(data),
+            error => alert(error),
+            () => console.log("finished")
+        );
+        return this.users;
+    }
+    fromData(data){
+        for(var i= 0; i < data.length;i++){
+            var user:User = {username: data[i].username,password: data[i].password, email: data[i].email , date: data[i].date, type: data[i].type , picture: data[i].picture};
+            this.users.push(user);
+        }
     }
 
-    private extractData(res: Response){
-        var body = res.json;
-
-        return body || {};
+    checkExistUser(username:string, password:string): boolean{
+        for(var i=0; i< this.users.length;i++){
+            if(this.users[i].username == username &&  this.users[i].password == password ){
+                return true;
+            }
+        }
+        return false;
     }
+
 
 }

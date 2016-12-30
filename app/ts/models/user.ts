@@ -8,4 +8,5 @@ export interface  User{
     date: string,
     type: string,
     picture: string
+
 }
